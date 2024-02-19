@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Upgrading Map</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="skill-tree">
+    <!-- Skill tree will be dynamically generated here -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+// Define your skills and their relationships
+const skills = [
+  { id: 1, name: 'Skill 1', requirements: [] },
+  { id: 2, name: 'Skill 2', requirements: [1] }, // Skill 2 requires Skill 1
+  { id: 3, name: 'Skill 3', requirements: [1] }, // Skill 3 also requires Skill 1
+  { id: 4, name: 'Skill 4', requirements: [2, 3] } // Skill 4 requires both Skill 2 and Skill 3
+];
+
+// Function to generate the HTML for the skill tree
+function generateSkillTree() {
+  const skillTree = document.getElementById('skill-tree');
+
+  // Clear any existing content
+  skillTree.innerHTML = '';
+
+  // Loop through each skill and generate HTML
+  skills.forEach(skill => {
+    const skillElement = document.createElement('div');
+    skillElement.classList.add('skill');
+    skillElement.textContent = skill.name;
+
+    // Check if the skill has any requirements
+    if (skill.requirements.length > 0) {
+      // Add a class to indicate locked skills
+      skillElement.classList.add('locked');
+      skillElement.title = 'Locked: Requires ' + skill.requirements.map(reqId => skills.find(s => s.id === reqId).name).join(' and ');
+    }
+
+    skillTree.appendChild(skillElement);
+  });
+}
+
+// Call the function to generate the skill tree when the page loads
+window.onload = generateSkillTree;
